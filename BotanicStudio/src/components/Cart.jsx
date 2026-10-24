@@ -28,7 +28,7 @@ const Cart = ({
   };
   return (
     <>
-      <aside className="w-80 sm:w-96 bg-white/95 backdrop-blur-md border border-stone-200/80 rounded-2xl p-5 shadow-lg flex flex-col justify-between max-h-[calc(100vh-120px)] sticky top-24 select-none">
+      <aside className="w-full bg-white/95 backdrop-blur-md border border-stone-200/80 rounded-2xl p-5 shadow-lg flex flex-col justify-between max-h-[calc(100vh-120px)] sticky top-24 select-none">
         {/* Top Header */}
         <div>
           <div className="flex items-center justify-between pb-3 border-b border-stone-100">

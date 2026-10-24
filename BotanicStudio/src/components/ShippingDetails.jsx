@@ -27,7 +27,7 @@ const ShippingDetails = (props) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-[2px]">
       {/* Modal Container */}
 
-      <div className="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-stone-200">
+      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto bg-white rounded-2xl p-6 shadow-2xl border border-stone-200">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-stone-200">
           <h2 className="font-serif font-bold text-lg text-stone-900 tracking-tight">
