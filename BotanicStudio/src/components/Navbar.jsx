@@ -1,19 +1,33 @@
 import { LeafyGreen, Heart, Menu } from "lucide-react";
+
 const Navbar = (props) => {
   return (
     <div className="w-full bg-white/90 backdrop-blur-md border-b border-stone-200 sticky top-0 z-30 p-2">
-      {/* Navbar */}
-      <div className="max-w-7xl mx-auto px-2 sm:px-6 py-2 sm:py-3 flex flex-wrap md:flex-nowrap items-center justify-between gap-2 sm:gap-4">
-        {/* Menu */}
-        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+      {/* Laptop only: menu pinned to the far-left corner of the screen */}
+      <div className="hidden lg:flex items-center gap-4 absolute left-6 top-1/2 -translate-y-1/2">
+        <button
+          type="button"
+          onClick={props.onToggleMenu}
+          className="flex items-center text-emerald-900 hover:text-black active:bg-stone-300 rounded-lg p-3"
+        >
+          <Menu size={24} />
+        </button>
+        <span className="font-bold font-serif text-2xl text-emerald-900">
+          Menu
+        </span>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-1 sm:px-4 py-1 sm:py-3 grid grid-cols-[auto_1fr_auto] md:grid-cols-[auto_auto_1fr_auto] items-center gap-x-2 sm:gap-x-4 gap-y-2">
+        {/* Menu (in layout to keep spacing; invisible on laptop, where the pinned one is used) */}
+        <div className="flex items-center gap-1 sm:gap-4 lg:invisible">
           <button
             type="button"
             onClick={props.onToggleMenu}
-            className="m-0 flex items-center gap-2 text-emerald-900 hover:text-black active:bg-stone-300 rounded-lg p-2 sm:p-3"
+            className="flex items-center text-emerald-900 hover:text-black active:bg-stone-300 rounded-lg p-2 sm:p-3"
           >
             <Menu size={24} />
           </button>
-          <span className="hidden sm:inline font-bold font-serif text-2xl text-emerald-900">
+          <span className="hidden lg:inline font-bold font-serif text-2xl text-emerald-900">
             Menu
           </span>
         </div>
@@ -23,19 +37,18 @@ const Navbar = (props) => {
           <div className="rounded-full p-2 sm:p-3 bg-emerald-800 text-white shrink-0">
             <LeafyGreen size={20} />
           </div>
-
           <div className="flex flex-col min-w-0">
             <h1 className="font-serif font-bold text-lg sm:text-2xl truncate">
               Botanic Studio
             </h1>
-            <span className="hidden md:block opacity-75 text-sm">
+            <span className="hidden lg:block opacity-75 text-sm">
               Nursery & living Terrariums
             </span>
           </div>
         </div>
 
-        {/* Search Input: full-width 2nd row on mobile, inline on md+ */}
-        <div className="order-last basis-full md:order-none md:basis-auto flex-1 md:max-w-md md:mx-6 relative">
+        {/* Search */}
+        <div className="order-last col-span-3 md:order-none md:col-span-1 md:mx-4 lg:mx-6 relative w-full md:max-w-md md:justify-self-center">
           <input
             type="text"
             value={props.value}
@@ -50,13 +63,16 @@ const Navbar = (props) => {
         </div>
 
         {/* Nav Buttons */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          <button type="button" className="rounded-full p-2 sm:p-3 bg-stone-100">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            className="rounded-full p-2 sm:p-3 bg-stone-100"
+          >
             <Heart size={18} />
           </button>
           <button
             onClick={props.onToggleCart}
-            className="bg-emerald-800 text-white font-bold min-w-20 px-3 whitespace-nowrap rounded-2xl h-8 sm:mt-3"
+            className="bg-emerald-800 text-white font-bold text-xs sm:text-base px-3 min-w-20 whitespace-nowrap rounded-2xl h-8 lg:mt-3"
           >
             Cart : {props.savedItems}
           </button>
