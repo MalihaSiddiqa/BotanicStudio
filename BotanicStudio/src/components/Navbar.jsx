@@ -1,11 +1,11 @@
 import { LeafyGreen, Heart, Menu } from "lucide-react";
 const Navbar = (props) => {
   return (
-    <div className="w-full pt-4 pb-2 bg-white">
+    <div className="w-full bg-white/90 backdrop-blur-md border-b border-stone-200 sticky top-0 z-30 p-2">
       {/* Navbar */}
-      <div className="w-full px-4 flex justify-between items-center gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-2 sm:gap-4">
         {/* Menu */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           <button
             type="button"
             onClick={props.onToggleMenu}

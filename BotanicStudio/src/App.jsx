@@ -94,7 +94,7 @@ const App = () => {
       <main className="w-full px-6 py-6 flex items-start gap-6">
         {/* 1. Left: Menu Sidebar */}
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out shrink-0 ${
+          className={`fixed lg:static top-0 left-0 h-full lg:h-auto z-50 lg:z-auto bg-white lg:bg-transparent transition-all duration-300 shrink-0 ${
             isMenu
               ? "w-64 opacity-100 translate-x-0"
               : "w-0 opacity-0 -translate-x-4 pointer-events-none"
