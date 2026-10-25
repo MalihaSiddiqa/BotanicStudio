@@ -1,6 +1,7 @@
 import { Heart } from "lucide-react";
+import { memo } from "react";
 
-const Home = (props) => {
+const Home = memo((props) => {
   return (
     <div className="group bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
       {/* Image Container with Badges */}
@@ -14,7 +15,7 @@ const Home = (props) => {
         {/* Wishlist Heart Icon */}
         <button
         type='button'
-          onClick={props.onLike}
+          onClick={()=>props.onLike(props.plant)}
          className="absolute top-2.5 right-2.5 w-7 h-7 bg-white/80 hover:bg-white text-stone-600 rounded-full flex items-center justify-center text-xs shadow-sm transition">
           <Heart 
          className={`${props.like ? 'fill-rose-600 text-rose-600' : 'fill-none text-stone-600'}`}
@@ -51,7 +52,7 @@ const Home = (props) => {
           </div>
 
           <button
-            onClick={props.onSave}
+            onClick={()=>props.onSave(props.plant)}
             className="px-3.5 py-1.5 bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold rounded-lg shadow-sm transition"
           >
             {props.isSaved ? "Added!" : "Add to Cart"}
@@ -60,6 +61,6 @@ const Home = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default Home;

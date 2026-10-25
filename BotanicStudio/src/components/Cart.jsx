@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ShippingDetails from "./ShippingDetails";
 
 const Cart = ({
   cartItems = [],

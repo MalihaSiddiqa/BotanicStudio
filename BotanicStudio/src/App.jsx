@@ -6,6 +6,8 @@ import CategoryCard from "./components/CategoryCard";
 import Cart from "./components/Cart";
 import ShippingDetails from "./components/ShippingDetails";
 import Wishlist from "./components/Wishlist";
+import { useMemo } from "react";
+import { useCallback } from "react";
 
 const App = () => {
   const [plants, setPlants] = useState([]);
@@ -47,46 +49,46 @@ useEffect(() => {
 }, [cartItems]);
 
 
-  const handleAddToCart = (plant) => {
-    setCartItems((prev) => {
-      const exists = prev.find((item) => item.id === plant.id);
-      if (exists) {
-        return prev.map((item) =>
-          item.id === plant.id
-            ? { ...item, quantity: (item.quantity || 1) + 1 }
-            : item,
-        );
-      }
-      return [...prev, { ...plant, quantity: 1 }];
-    });
-  };
+const handleToggleWishlist = useCallback((plant) => {
+  setWishlistItems((prev) =>
+    prev.some((item) => item.id === plant.id)
+      ? prev.filter((item) => item.id !== plant.id)
+      : [...prev, plant],
+  );
+}, []);
 
-  const handleToggleWishlist = (plant) => {
-    setWishlistItems((prev) => 
-     prev.some((item)=>item.id===plant.id)
-     ? prev.filter((item)=>item.id !== plant.id)
-     : [...prev,plant],
-    )
-    }
-
-
-    const handleRemoveFromCart = (id) => {
-      setCartItems((prev) => prev.filter((item) => item.id !== id));
-    };
-
-    const handleUpdateQty = (id, change) => {
-      setCartItems((prev) =>
-        prev
-          .map((item) => {
-            if (item.id === id) {
-              const newQty = (item.quantity || 1) + change;
-              return newQty > 0 ? { ...item, quantity: newQty } : null;
-            }
-            return item;
-          })
-          .filter(Boolean),
+const handleAddToCart = useCallback((plant) => {
+  setCartItems((prev) => {
+    const exists = prev.find((item) => item.id === plant.id);
+    if (exists) {
+      return prev.map((item) =>
+        item.id === plant.id
+          ? { ...item, quantity: (item.quantity || 1) + 1 }
+          : item,
       );
-    };
+    }
+    return [...prev, { ...plant, quantity: 1 }];
+  });
+}, []);
+
+
+   const handleRemoveFromCart = useCallback((id) => {
+  setCartItems((prev) => prev.filter((item) => item.id !== id));
+}, []);
+
+const handleUpdateQty = useCallback((id, change) => {
+  setCartItems((prev) =>
+    prev
+      .map((item) => {
+        if (item.id === id) {
+          const newQty = (item.quantity || 1) + change;
+          return newQty > 0 ? { ...item, quantity: newQty } : null;
+        }
+        return item;
+      })
+      .filter(Boolean),
+  );
+}, []);
 
     const API_URL = "https://6adb40d43b7e90b8208f96d6.mockapi.io/plants/plants";
     const fetchPlants = () => {
@@ -105,19 +107,15 @@ useEffect(() => {
     useEffect(() => {
       fetchPlants();
     }, []);
-    const filteredPlants = plants.filter((plant) => {
-      const matchesSearch = plant.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
-      const matchesCategory =
-        categoryFilter === "All" || plant.category === categoryFilter;
-      const matchesCare =
-        careFilter === "All" || plant.careLevel === careFilter;
-      const matchesLight =
-        lightFilter === "All" || plant.lightNeed === lightFilter;
-      const matchesFilter = matchesCategory && matchesCare && matchesLight;
-      return matchesFilter && matchesSearch;
-    });
+   const filteredPlants = useMemo(() => {
+  return plants.filter((plant) => {
+    const matchesSearch = plant.name.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = categoryFilter === "All" || plant.category === categoryFilter;
+    const matchesCare = careFilter === "All" || plant.careLevel === careFilter;
+    const matchesLight = lightFilter === "All" || plant.lightNeed === lightFilter;
+    return matchesCategory && matchesCare && matchesLight && matchesSearch;
+  });
+}, [plants, search, categoryFilter, careFilter, lightFilter]);
     const closeDrawersOnMobile = () => {
       if (window.innerWidth < 1024) {
         setIsMenu(false);
