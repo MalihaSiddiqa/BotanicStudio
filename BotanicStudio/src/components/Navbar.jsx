@@ -48,7 +48,7 @@ const Navbar = (props) => {
         </div>
 
         {/* Search */}
-        <div className="order-last col-span-3 md:order-none md:col-span-1 md:mx-4 lg:mx-6 relative w-full md:max-w-md md:justify-self-center">
+        <div className="order-last col-span-3 md:order-0 md:col-span-1 md:mx-4 lg:mx-6 relative w-full md:max-w-md md:justify-self-center">
           <input
             type="text"
             value={props.value}
@@ -65,10 +65,16 @@ const Navbar = (props) => {
         {/* Nav Buttons */}
         <div className="flex items-center gap-2 sm:gap-3">
           <button
+          onClick={props.onToggleWishlist}
             type="button"
             className="rounded-full p-2 sm:p-3 bg-stone-100"
           >
             <Heart size={18} />
+              {props.wishlistCount > 0 && (
+    <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-rose-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+      {props.wishlistCount}
+    </span>
+              )}
           </button>
           <button
             onClick={props.onToggleCart}

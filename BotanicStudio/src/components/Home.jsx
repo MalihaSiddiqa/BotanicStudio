@@ -12,8 +12,13 @@ const Home = (props) => {
         />
 
         {/* Wishlist Heart Icon */}
-        <button className="absolute top-2.5 right-2.5 w-7 h-7 bg-white/80 hover:bg-white text-stone-600 rounded-full flex items-center justify-center text-xs shadow-sm transition">
-          <Heart size={12} />
+        <button
+        type='button'
+          onClick={props.onLike}
+         className="absolute top-2.5 right-2.5 w-7 h-7 bg-white/80 hover:bg-white text-stone-600 rounded-full flex items-center justify-center text-xs shadow-sm transition">
+          <Heart 
+         className={`${props.like ? 'fill-rose-600 text-rose-600' : 'fill-none text-stone-600'}`}
+          size={15} />
         </button>
       </div>
 

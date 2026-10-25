@@ -43,12 +43,6 @@ const Cart = ({
               ✕
             </button>
           </div>
-
-          {/* Free Delivery Banner */}
-          <div className="mt-3 bg-emerald-50 text-emerald-900 text-xs font-semibold px-3 py-2 rounded-xl flex items-center gap-2 border border-emerald-100">
-            <span>🎉</span> You unlocked Free Delivery!
-          </div>
-
           {/* Items List */}
           <div className="mt-4 space-y-3 overflow-y-auto max-h-72 pr-1">
             {cartItems.length === 0 ? (
