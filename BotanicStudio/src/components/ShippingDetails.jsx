@@ -25,10 +25,9 @@ const ShippingDetails = (props) => {
 
   return (
     <div
-    onClick={() => props.setOrderConfirm((prev) => !prev)}
+    onClick={() => props.addShippingDetails((prev) => !prev)}
      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 ">
-      {/* Modal Container */}
-
+      {/*  Container */}
       <div 
       onClick={(e) => e.stopPropagation()}
       className="relative w-full max-w-md max-h-[90vh] overflow-y-auto bg-white rounded-2xl p-6 border border-stone-200">
@@ -38,7 +37,7 @@ const ShippingDetails = (props) => {
             Shipping Details
           </h2>
           <button
-            onClick={() => props.setOrderConfirm((prev) => !prev)}
+            onClick={() => props.addShippingDetails((prev) => !prev)}
             type="button"
             className="text-stone-400 hover:text-stone-700 text-sm font-semibold p-1"
           >
@@ -123,8 +122,8 @@ const ShippingDetails = (props) => {
             city={formData.city}
             closeConfirmation={() => {
               setonConfirmation(false);
-              if (props.setOrderConfirm) {
-                props.setOrderConfirm(false);
+              if (props.addShippingDetails) {
+                props.addShippingDetails(false);
               }
             }}
           />

@@ -13,11 +13,11 @@ const App = () => {
   const [plants, setPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [isWishlistOpn , setIsWishlistOpn] = useState(false);
-  const [isMenu, setIsMenu] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [careFilter, setCareFilter] = useState("All");
   const [lightFilter, setLightFilter] = useState("All");
+  const [isMenu, setIsMenu] = useState(false);
+  const [isWishlistOpn , setIsWishlistOpn] = useState(false);
     const [wishlistItems, setWishlistItems] = useState(() => {
   try {
     const saved = localStorage.getItem("wishlistItems");
@@ -35,8 +35,7 @@ const App = () => {
   }
 });
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [coupon, setCoupon] = useState("");
-  const [orderConfirm, setOrderConfirm] = useState(false);
+  const [shippingDetails, setShippingDetails] = useState(false);
 
 
   useEffect(() => {
@@ -50,43 +49,31 @@ useEffect(() => {
 
 const handleToggleWishlist = useCallback((plant) => {
   setWishlistItems((prev) =>
-    prev.some((item) => item.id === plant.id)
+    prev.find((item) => item.id === plant.id)
       ? prev.filter((item) => item.id !== plant.id)
       : [...prev, plant],
   );
 }, []);
 
 const handleAddToCart = useCallback((plant) => {
-  setCartItems((prev) => {
-    const exists = prev.find((item) => item.id === plant.id);
-    if (exists) {
-      return prev.map((item) =>
-        item.id === plant.id
-          ? { ...item, quantity: (item.quantity || 1) + 1 }
-          : item,
-      );
-    }
-    return [...prev, { ...plant, quantity: 1 }];
-  });
+  setCartItems((prev) => [...prev, { ...plant, quantity: 1 }]);
 }, []);
-
 
    const handleRemoveFromCart = useCallback((id) => {
   setCartItems((prev) => prev.filter((item) => item.id !== id));
 }, []);
 
 const handleUpdateQty = useCallback((id, change) => {
-  setCartItems((prev) =>
-    prev
+  setCartItems((prev) => {
+    return prev
       .map((item) => {
         if (item.id === id) {
-          const newQty = (item.quantity || 1) + change;
-          return newQty > 0 ? { ...item, quantity: newQty } : null;
+          return { ...item, quantity: item.quantity + change };
         }
         return item;
       })
-      .filter(Boolean),
-  );
+      .filter((item) => item.quantity > 0);
+  });
 }, []);
 
     const API_URL = "https://6adb40d43b7e90b8208f96d6.mockapi.io/plants/plants";
@@ -118,7 +105,7 @@ const handleUpdateQty = useCallback((id, change) => {
     return (
       <div className="bg-amber-50 min-h-screen">
         <Navbar
-           WishlistCount={wishlistItems.length}
+          WishlistCount={wishlistItems.length}
           onToggleWishlist={() => setIsWishlistOpn((prev) => !prev)}
           onToggleCart={() => setIsCartOpen((prev) => !prev)}
           savedItems={cartItems.length}
@@ -127,7 +114,6 @@ const handleUpdateQty = useCallback((id, change) => {
           onSearch={(text) => setSearch(text)}
         />
 
-        {/* Backdrop for mobile/tablet drawers (tap outside to close) */}
         {(isMenu || isCartOpen) && (
           <div
             className="fixed inset-0 bg-black/30 z-40 "
@@ -181,8 +167,6 @@ const handleUpdateQty = useCallback((id, change) => {
               >
                 {filteredPlants.map((plant) => (
                   <Home 
-                    onLike={()=>handleToggleWishlist(plant)}
-                    like={wishlistItems.some((item) => item.id === plant.id)}
                     key={plant.id}
                     plant={plant}
                     img={plant.image}
@@ -192,6 +176,8 @@ const handleUpdateQty = useCallback((id, change) => {
                     price={plant.price}
                     careLevel={plant.careLevel}
                     lightNeed={plant.lightNeed}
+                    onLike={()=>handleToggleWishlist(plant)}
+                    like={wishlistItems.some((item) => item.id === plant.id)}
                     isSaved={cartItems.some((item) => item.id === plant.id)}
                     onSave={() => handleAddToCart(plant)}
                   />
@@ -211,21 +197,19 @@ const handleUpdateQty = useCallback((id, change) => {
             className="w-full fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 ">
               <Cart
                 setCartItems={setCartItems}
-                coupon={coupon}
-                setCoupon={setCoupon}
                 cartItems={cartItems}
                 onClose={() => setIsCartOpen(false)}
                 onRemove={handleRemoveFromCart}
                 onUpdateQty={handleUpdateQty}
-                addShippingDetails={setOrderConfirm}
+                addShippingDetails={setShippingDetails}
               />
             </div>
           </div>
         </main>
 
-        {orderConfirm &&  (
+        {shippingDetails &&  (
           <ShippingDetails
-            setOrderConfirm={setOrderConfirm}
+            addShippingDetails={setShippingDetails}
             onOrderSuccess={() => {
               setCartItems([]);
             }}

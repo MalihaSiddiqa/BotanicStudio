@@ -1,7 +1,7 @@
 import { Heart } from "lucide-react";
 
 const Wishlist = ({
-  wishlistItems = [],
+  wishlistItems,
   onClose,
   onRemove,
 }) => {

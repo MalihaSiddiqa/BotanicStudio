@@ -1,20 +1,18 @@
 import { useState } from "react";
 
 const Cart = ({
-  cartItems = [],
+  cartItems ,
   onClose,
   onRemove,
   onUpdateQty,
-  coupon,
-  setCoupon,
   addShippingDetails,
 }) => {
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
+  const [coupon, setCoupon] = useState("");
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
-    0,
-  );
+  const subtotal = cartItems.reduce( (sum, item) => 
+    sum + (item.price) * (item.quantity || 1), 0,)
+
   const discount = isDiscountApplied ? Math.round(subtotal * 0.1) : 0;
   const grandTotal = subtotal - discount;
   const ApplyCoupon = () => {
@@ -31,7 +29,7 @@ const Cart = ({
         <div>
           <div className="flex items-center justify-between pb-3 ">
             <h2 className="font-serif font-bold text-lg text-stone-900">
-              Your Plant Bag ({cartItems.length})
+              Your Plant Cart ({cartItems.length})
             </h2>
             <button
               type="button"
@@ -45,7 +43,7 @@ const Cart = ({
           <div className="mt-4 space-y-3 overflow-y-auto max-h-72 pr-1">
             {cartItems.length === 0 ? (
               <p className="text-center text-stone-400 text-sm py-8">
-                Your bag is empty.
+                Your Cart is empty.
               </p>
             ) : (
               cartItems.map((item) => (
@@ -72,7 +70,7 @@ const Cart = ({
                     <div className="flex items-center gap-2 mt-1.5">
                       <button
                         type="button"
-                        onClick={() => onUpdateQty && onUpdateQty(item.id, -1)}
+                        onClick={() => onUpdateQty(item.id, -1)}
                         className="w-5 h-5 bg-white border border-stone-200 text-stone-700 rounded text-xs flex items-center justify-center "
                       >
                         -
@@ -82,7 +80,7 @@ const Cart = ({
                       </span>
                       <button
                         type="button"
-                        onClick={() => onUpdateQty && onUpdateQty(item.id, 1)}
+                        onClick={() => onUpdateQty(item.id, 1)}
                         className="w-5 h-5 bg-white border border-stone-200 text-stone-700 rounded text-xs flex items-center justify-center"
                       >
                         +
@@ -97,7 +95,7 @@ const Cart = ({
                     </span>
                     <button
                       type="button"
-                      onClick={() => onRemove && onRemove(item.id)}
+                      onClick={() => onRemove(item.id)}
                       className="text-[10px] text-red-50 font-semibold"
                     >
                       Remove
@@ -122,7 +120,7 @@ const Cart = ({
             />
             <button
               type="button"
-              disabled={cartItems.length <=0}
+              disabled={cartItems.length <= 0}
               onClick={ApplyCoupon}
               className="bg-stone-900 text-white text-[11px] font-semibold px-3 py-1.5 rounded-lg "
             >

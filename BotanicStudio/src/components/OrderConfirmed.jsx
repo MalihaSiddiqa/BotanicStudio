@@ -10,7 +10,6 @@ const OrderConfirmed = (props) => {
         {/* Mint Checkmark Circle */}
         <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mb-5">
           ✔️
-        
         </div>
 
         {/* Heading */}
@@ -20,9 +19,9 @@ const OrderConfirmed = (props) => {
 
         {/* Message */}
         <p className="text-sm text-stone-600 max-w-xs mb-6">
-          Thank you,{" "}
+          Thank you,
           <span className="font-semibold text-stone-900">{props.Name}</span>.
-          Your plants are getting prepped for delivery to{" "}
+          Your plants are getting prepped for delivery to
           <span className="font-semibold text-stone-900">{props.city}</span>.
         </p>
 

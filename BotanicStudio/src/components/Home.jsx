@@ -53,6 +53,7 @@ const Home = memo((props) => {
 
           <button
             onClick={()=>props.onSave(props.plant)}
+            disabled={props.isSaved}
             className="px-3.5 py-1.5 bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold rounded-lg "
           >
             {props.isSaved ? "Added!" : "Add to Cart"}
