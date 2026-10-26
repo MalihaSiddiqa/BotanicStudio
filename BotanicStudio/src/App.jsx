@@ -13,7 +13,12 @@ const App = () => {
   const [plants, setPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [wishlistItems, setWishlistItems] = useState(() => {
+  const [isWishlistOpn , setIsWishlistOpn] = useState(false);
+  const [isMenu, setIsMenu] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [careFilter, setCareFilter] = useState("All");
+  const [lightFilter, setLightFilter] = useState("All");
+    const [wishlistItems, setWishlistItems] = useState(() => {
   try {
     const saved = localStorage.getItem("wishlistItems");
     return saved ? JSON.parse(saved) : [];
@@ -21,11 +26,6 @@ const App = () => {
     return [];
   }
 });
-  const [isWishlistOpn , setIsWishlistOpn] = useState(false);
-  const [isMenu, setIsMenu] = useState(false);
-  const [categoryFilter, setCategoryFilter] = useState("All");
-  const [careFilter, setCareFilter] = useState("All");
-  const [lightFilter, setLightFilter] = useState("All");
   const [cartItems, setCartItems] = useState(() => {
   try {
     const saved = localStorage.getItem("cartItems");
@@ -43,7 +43,6 @@ const App = () => {
   localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
 }, [wishlistItems]);
 
-// optional: for the cart
 useEffect(() => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 }, [cartItems]);
@@ -116,12 +115,6 @@ const handleUpdateQty = useCallback((id, change) => {
     return matchesCategory && matchesCare && matchesLight && matchesSearch;
   });
 }, [plants, search, categoryFilter, careFilter, lightFilter]);
-    const closeDrawersOnMobile = () => {
-      if (window.innerWidth < 1024) {
-        setIsMenu(false);
-        setIsCartOpen(false);
-      }
-    };
     return (
       <div className="bg-amber-50 min-h-screen">
         <Navbar
@@ -137,7 +130,7 @@ const handleUpdateQty = useCallback((id, change) => {
         {/* Backdrop for mobile/tablet drawers (tap outside to close) */}
         {(isMenu || isCartOpen) && (
           <div
-            className="fixed inset-0 bg-black/30 z-40 lg:hidden"
+            className="fixed inset-0 bg-black/30 z-40 "
             onClick={() => {
               setIsMenu(false);
               setIsCartOpen(false);
@@ -146,54 +139,45 @@ const handleUpdateQty = useCallback((id, change) => {
         )}
 
         <main className="w-full px-3 sm:px-6 py-6 flex items-start gap-6">
-          {/* 1. Left: Menu Sidebar (drawer below lg, inline at lg+) */}
+
           <div
-            className={`fixed lg:static top-0 left-0 h-full lg:h-auto z-50 lg:z-auto bg-white lg:bg-transparent overflow-y-auto lg:overflow-visible transition-all duration-300 shrink-0 ${
+            className={`fixed top-0 left-0 h-full z-50 bg-white
+               transition-all duration-300 ${
               isMenu
-                ? "w-64 max-w-[85vw] opacity-100 translate-x-0"
-                : "w-0 opacity-0 -translate-x-4 pointer-events-none"
+                ? "w-64"
+                : "w-0 opacity-0 pointer-events-none"
             }`}
           >
-            <div className="w-64 max-w-[85vw]">
+            <div className="w-64">
               <CategoryCard
                 selectedCategory={categoryFilter}
                 onSelectCategory={(v) => {
                   setCategoryFilter(v);
-                  closeDrawersOnMobile();
                 }}
                 selectedLight={lightFilter}
                 onSelectLight={(v) => {
                   setLightFilter(v);
-                  closeDrawersOnMobile();
                 }}
                 selectedCare={careFilter}
                 onSelectCare={(v) => {
                   setCareFilter(v);
-                  closeDrawersOnMobile();
                 }}
                 onResetAll={() => {
                   setCategoryFilter("All");
                   setLightFilter("All");
                   setCareFilter("All");
-                  closeDrawersOnMobile();
                 }}
               />
             </div>
           </div>
 
           {/* 2. Center: Plants Catalog */}
-          <div className="flex-1 min-w-0 transition-all duration-300">
+          <div className="flex-1 min-w-0">
             {loading ? (
               <p className="opacity-75 text-center">loading...</p>
             ) : (
               <div
-                className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${
-                  isMenu && isCartOpen
-                    ? "lg:grid-cols-2 xl:grid-cols-3"
-                    : isMenu || isCartOpen
-                      ? "lg:grid-cols-3 xl:grid-cols-4"
-                      : "lg:grid-cols-4 xl:grid-cols-5"
-                }`}
+                className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
               >
                 {filteredPlants.map((plant) => (
                   <Home 
@@ -216,15 +200,15 @@ const handleUpdateQty = useCallback((id, change) => {
             )}
           </div>
 
-          {/* 3. Right: Cart (drawer below lg, inline at lg+) */}
           <div
-            className={`fixed lg:static top-0 right-0 h-full lg:h-auto z-50 lg:z-auto overflow-y-auto lg:overflow-hidden transition-all duration-300 ease-in-out shrink-0 ${
+            className={`fixed top-0 right-0 h-full z-50 overflow-y-auto transition-all duration-300  ${
               isCartOpen
-                ? "w-[90vw] max-w-sm sm:w-96 opacity-100 translate-x-0 p-3 lg:p-0"
-                : "w-0 opacity-0 translate-x-4 pointer-events-none"
+                ? "w-[90vw] max-w-sm sm:w-96 p-3"
+                : "w-0 opacity-0 pointer-events-none"
             }`}
           >
-            <div className="w-full lg:w-96">
+            <div 
+            className="w-full fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 ">
               <Cart
                 setCartItems={setCartItems}
                 coupon={coupon}
@@ -239,7 +223,7 @@ const handleUpdateQty = useCallback((id, change) => {
           </div>
         </main>
 
-        {orderConfirm && (
+        {orderConfirm &&  (
           <ShippingDetails
             setOrderConfirm={setOrderConfirm}
             onOrderSuccess={() => {

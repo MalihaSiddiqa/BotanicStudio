@@ -7,7 +7,6 @@ const Cart = ({
   onUpdateQty,
   coupon,
   setCoupon,
-  setCartItems,
   addShippingDetails,
 }) => {
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
@@ -27,17 +26,17 @@ const Cart = ({
   };
   return (
     <>
-      <aside className="w-full bg-white/95 backdrop-blur-md border border-stone-200/80 rounded-2xl p-5 shadow-lg flex flex-col justify-between max-h-[calc(100vh-120px)] sticky top-24 select-none">
+      <div className="w-full lg:w-120 bg-white/95 rounded-2xl p-5 shadow-lg flex flex-col justify-between sticky top-24">
         {/* Top Header */}
         <div>
-          <div className="flex items-center justify-between pb-3 border-b border-stone-100">
-            <h2 className="font-serif font-bold text-lg text-stone-900 tracking-tight">
+          <div className="flex items-center justify-between pb-3 ">
+            <h2 className="font-serif font-bold text-lg text-stone-900">
               Your Plant Bag ({cartItems.length})
             </h2>
             <button
               type="button"
               onClick={onClose}
-              className="text-stone-400 hover:text-stone-800 text-lg leading-none transition"
+              className="text-stone-400 hover:text-stone-800 text-lg"
             >
               ✕
             </button>
@@ -52,29 +51,29 @@ const Cart = ({
               cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-stone-50/70 border border-stone-200/60 rounded-xl p-3 flex items-center justify-between gap-3"
+                  className="bg-stone-70 border border-stone-200 rounded-xl p-3 flex items-center justify-between gap-3"
                 >
                   {/* Image */}
                   <img
-                    src={item.image || item.img}
+                    src={item.image}
                     alt={item.name}
                     className="w-14 h-14 object-cover rounded-lg bg-stone-200 shrink-0"
                   />
 
                   {/* Name & Stepper */}
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-xs font-bold text-stone-900 truncate">
+                    <h4 className="text-xs font-bold text-stone-900">
                       {item.name}
                     </h4>
                     <p className="text-[11px] text-stone-400 mt-0.5">
-                      ₹{item.price}
+                      {item.scientificName}
                     </p>
 
                     <div className="flex items-center gap-2 mt-1.5">
                       <button
                         type="button"
                         onClick={() => onUpdateQty && onUpdateQty(item.id, -1)}
-                        className="w-5 h-5 bg-white border border-stone-200 text-stone-700 rounded text-xs flex items-center justify-center hover:bg-stone-100 active:scale-95"
+                        className="w-5 h-5 bg-white border border-stone-200 text-stone-700 rounded text-xs flex items-center justify-center "
                       >
                         -
                       </button>
@@ -84,7 +83,7 @@ const Cart = ({
                       <button
                         type="button"
                         onClick={() => onUpdateQty && onUpdateQty(item.id, 1)}
-                        className="w-5 h-5 bg-white border border-stone-200 text-stone-700 rounded text-xs flex items-center justify-center hover:bg-stone-100 active:scale-95"
+                        className="w-5 h-5 bg-white border border-stone-200 text-stone-700 rounded text-xs flex items-center justify-center"
                       >
                         +
                       </button>
@@ -94,12 +93,12 @@ const Cart = ({
                   {/* Total Item Price & Remove */}
                   <div className="flex flex-col items-end justify-between self-stretch shrink-0">
                     <span className="text-xs font-bold text-stone-900">
-                      ₹{(item.price || 0) * (item.quantity || 1)}
+                      ₹{(item.price ) * (item.quantity || 1)}
                     </span>
                     <button
                       type="button"
                       onClick={() => onRemove && onRemove(item.id)}
-                      className="text-[10px] text-red-500 hover:text-red-700 font-semibold transition"
+                      className="text-[10px] text-red-50 font-semibold"
                     >
                       Remove
                     </button>
@@ -110,7 +109,7 @@ const Cart = ({
           </div>
         </div>
 
-        {/* Footer / Summary */}
+        {/* Footer*/}
         <div className="pt-4 mt-4 border-t border-stone-200">
           {/* Coupon */}
           <div className="flex gap-2 mb-3">
@@ -119,12 +118,13 @@ const Cart = ({
               value={coupon}
               onChange={(e) => setCoupon(e.target.value)}
               placeholder="COUPON: PLANTLOVE10"
-              className="flex-1 bg-stone-100 rounded-lg text-[10px] px-2.5 py-1.5 font-mono text-stone-600 outline-none"
+              className="flex-1 bg-stone-100 rounded-lg text-[10px] px-2.5 py-1.5 text-stone-600 outline-none"
             />
             <button
               type="button"
+              disabled={cartItems.length <=0}
               onClick={ApplyCoupon}
-              className="bg-stone-900 text-white text-[11px] font-semibold px-3 py-1.5 rounded-lg hover:bg-stone-800"
+              className="bg-stone-900 text-white text-[11px] font-semibold px-3 py-1.5 rounded-lg "
             >
               Apply
             </button>
@@ -151,14 +151,15 @@ const Cart = ({
           </div>
           <button
             onClick={() => addShippingDetails((prev) => !prev)}
+            disabled={cartItems.length <= 0}
             type="button"
-            className="w-full py-2.5 bg-emerald-900 hover:bg-emerald-800 active:scale-[0.99] text-white text-xs font-semibold rounded-xl shadow-sm transition"
+            className="w-full py-2.5 bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold rounded-xl"
           >
             PROCEED TO CHECKOUT
           </button>
         </div>
-      </aside>
-    </>
+      </div>   
+      </>
   );
 };
 

@@ -24,19 +24,23 @@ const ShippingDetails = (props) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-[2px]">
+    <div
+    onClick={() => props.setOrderConfirm((prev) => !prev)}
+     className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 ">
       {/* Modal Container */}
 
-      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto bg-white rounded-2xl p-6 shadow-2xl border border-stone-200">
+      <div 
+      onClick={(e) => e.stopPropagation()}
+      className="relative w-full max-w-md max-h-[90vh] overflow-y-auto bg-white rounded-2xl p-6 border border-stone-200">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-stone-200">
-          <h2 className="font-serif font-bold text-lg text-stone-900 tracking-tight">
+          <h2 className="font-serif font-bold text-lg text-stone-900">
             Shipping Details
           </h2>
           <button
             onClick={() => props.setOrderConfirm((prev) => !prev)}
             type="button"
-            className="text-stone-400 hover:text-stone-700 text-sm font-semibold transition leading-none p-1"
+            className="text-stone-400 hover:text-stone-700 text-sm font-semibold p-1"
           >
             ✕
           </button>
@@ -55,7 +59,7 @@ const ShippingDetails = (props) => {
               value={formData.fullName}
               onChange={handleChange}
               type="text"
-              className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm text-stone-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-800 transition"
+              className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm text-stone-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-800"
             />
           </div>
 
@@ -71,7 +75,7 @@ const ShippingDetails = (props) => {
                 onChange={handleChange}
                 required
                 type="tel"
-                className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm text-stone-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-800 transition"
+                className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm text-stone-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-800"
               />
             </div>
 
@@ -85,7 +89,7 @@ const ShippingDetails = (props) => {
                 required
                 type="text"
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm text-stone-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-800 transition"
+                className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm text-stone-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-800"
               />
             </div>
           </div>
@@ -101,19 +105,14 @@ const ShippingDetails = (props) => {
               onChange={handleChange}
               required
               rows={2}
-              className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm text-stone-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-800 transition resize-none"
+              className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm text-stone-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-800"
             />
           </div>
-
-          {/* Simulation Disclaimer */}
-          <p className="text-[11px] text-stone-400 italic pt-1">
-            This is a simulated checkout. No real payment or money is required.
-          </p>
 
           {/* Confirm Order Button */}
           <button
             type="submit"
-            className="w-full py-2.5 bg-emerald-900 hover:bg-emerald-800 active:scale-[0.99] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm transition mt-2"
+            className="w-full py-2.5 bg-emerald-900 hover:bg-emerald-800 text-white font-bold text-xs uppercase rounded-lg shadow-sm mt-2"
           >
             CONFIRM ORDER
           </button>
