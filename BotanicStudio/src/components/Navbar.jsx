@@ -70,7 +70,7 @@ const Navbar = (props) => {
           >
             <Heart size={18} />
              {props.WishlistCount > 0 && (
-    <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-rose-600
+    <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-emerald-900
      text-white rounded-full">
       {props.WishlistCount}
     </span>

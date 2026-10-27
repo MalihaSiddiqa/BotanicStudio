@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
-import Navbar from "./components/Navbar";
+import { useEffect, useState,useMemo } from "react";
 import axios from "axios";
+import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import CategoryCard from "./components/CategoryCard";
 import Cart from "./components/Cart";
 import ShippingDetails from "./components/ShippingDetails";
 import Wishlist from "./components/Wishlist";
-import { useMemo } from "react";
-import { useCallback } from "react";
 
 const App = () => {
   const [plants, setPlants] = useState([]);
@@ -17,7 +15,10 @@ const App = () => {
   const [careFilter, setCareFilter] = useState("All");
   const [lightFilter, setLightFilter] = useState("All");
   const [isMenu, setIsMenu] = useState(false);
+  const [shippingDetails, setShippingDetails] = useState(false);
   const [isWishlistOpn , setIsWishlistOpn] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false)
+
     const [wishlistItems, setWishlistItems] = useState(() => {
   try {
     const saved = localStorage.getItem("wishlistItems");
@@ -34,9 +35,6 @@ const App = () => {
     return [];
   }
 });
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [shippingDetails, setShippingDetails] = useState(false);
-
 
   useEffect(() => {
   localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
@@ -45,36 +43,6 @@ const App = () => {
 useEffect(() => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 }, [cartItems]);
-
-
-const handleToggleWishlist = useCallback((plant) => {
-  setWishlistItems((prev) =>
-    prev.find((item) => item.id === plant.id)
-      ? prev.filter((item) => item.id !== plant.id)
-      : [...prev, plant],
-  );
-}, []);
-
-const handleAddToCart = useCallback((plant) => {
-  setCartItems((prev) => [...prev, { ...plant, quantity: 1 }]);
-}, []);
-
-   const handleRemoveFromCart = useCallback((id) => {
-  setCartItems((prev) => prev.filter((item) => item.id !== id));
-}, []);
-
-const handleUpdateQty = useCallback((id, change) => {
-  setCartItems((prev) => {
-    return prev
-      .map((item) => {
-        if (item.id === id) {
-          return { ...item, quantity: item.quantity + change };
-        }
-        return item;
-      })
-      .filter((item) => item.quantity > 0);
-  });
-}, []);
 
     const API_URL = "https://6adb40d43b7e90b8208f96d6.mockapi.io/plants/plants";
     const fetchPlants = () => {
@@ -102,39 +70,61 @@ const handleUpdateQty = useCallback((id, change) => {
     return matchesCategory && matchesCare && matchesLight && matchesSearch;
   });
 }, [plants, search, categoryFilter, careFilter, lightFilter]);
+
+const handleToggleWishlist =(plant) => {
+  setWishlistItems((prev) =>
+     prev.find((item) => item.id === plant.id)  
+  ? prev.filter((item) => item.id !== plant.id)
+   : [...prev, plant], 
+  );}
+
+const handleAddToCart =(plant) => { setCartItems((prev) => [...prev, { ...plant , quantity : 1}])}
+
+   const handleRemoveFromCart =(id) => {
+  setCartItems((prev) => prev.filter((item) => item.id !== id));
+}
+
+const handleUpdateQty = (id, change) => {
+  setCartItems((prev) => {
+    return prev.map((item) => {
+        if (item.id === id) {
+          return { ...item, quantity: (item.quantity ) + change };
+        }
+        return item;
+      })
+      .filter((item) => item.quantity > 0);
+  });
+};
+
+
     return (
       <div className="bg-amber-50 min-h-screen">
         <Navbar
           WishlistCount={wishlistItems.length}
+          savedItems={cartItems.length}
           onToggleWishlist={() => setIsWishlistOpn((prev) => !prev)}
           onToggleCart={() => setIsCartOpen((prev) => !prev)}
-          savedItems={cartItems.length}
           onToggleMenu={() => setIsMenu((prev) => !prev)}
           value={search}
           onSearch={(text) => setSearch(text)}
         />
 
-        {(isMenu || isCartOpen) && (
+        {(isMenu || isCartOpen || isWishlistOpn || shippingDetails) && (
           <div
             className="fixed inset-0 bg-black/30 z-40 "
             onClick={() => {
               setIsMenu(false);
               setIsCartOpen(false);
+              setIsWishlistOpn(false)
+              setShippingDetails(false)
             }}
           />
         )}
 
         <main className="w-full px-3 sm:px-6 py-6 flex items-start gap-6">
 
-          <div
-            className={`fixed top-0 left-0 h-full z-50 bg-white
-               transition-all duration-300 ${
-              isMenu
-                ? "w-64"
-                : "w-0 opacity-0 pointer-events-none"
-            }`}
-          >
-            <div className="w-64">
+          {isMenu &&
+            <div className="w-64 fixed top-0 left-0 h-full z-50 bg-white">
               <CategoryCard
                 selectedCategory={categoryFilter}
                 onSelectCategory={(v) => {
@@ -155,13 +145,18 @@ const handleUpdateQty = useCallback((id, change) => {
                 }}
               />
             </div>
-          </div>
+          }
 
-          {/* 2. Center: Plants Catalog */}
+          {/* Plants Catalog */}
           <div className="flex-1 min-w-0">
             {loading ? (
-              <p className="opacity-75 text-center">loading...</p>
-            ) : (
+              <p className="opacity-75 text-center py-10">Loading...</p>
+            ): filteredPlants.length === 0 ? (
+             <p className="opacity-75 text-center py-10">
+                No plants found. Try a different search or filter.
+                 </p>
+                )
+             : (
               <div
                 className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
               >
@@ -176,23 +171,17 @@ const handleUpdateQty = useCallback((id, change) => {
                     price={plant.price}
                     careLevel={plant.careLevel}
                     lightNeed={plant.lightNeed}
-                    onLike={()=>handleToggleWishlist(plant)}
                     like={wishlistItems.some((item) => item.id === plant.id)}
                     isSaved={cartItems.some((item) => item.id === plant.id)}
+                    onLike={()=>handleToggleWishlist(plant)}
                     onSave={() => handleAddToCart(plant)}
                   />
                 ))}
-              </div>
+              </div> 
             )}
           </div>
 
-          <div
-            className={`fixed top-0 right-0 h-full z-50 overflow-y-auto transition-all duration-300  ${
-              isCartOpen
-                ? "w-[90vw] max-w-sm sm:w-96 p-3"
-                : "w-0 opacity-0 pointer-events-none"
-            }`}
-          >
+          {isCartOpen && (
             <div 
             className="w-full fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 ">
               <Cart
@@ -204,7 +193,7 @@ const handleUpdateQty = useCallback((id, change) => {
                 addShippingDetails={setShippingDetails}
               />
             </div>
-          </div>
+          )}
         </main>
 
         {shippingDetails &&  (

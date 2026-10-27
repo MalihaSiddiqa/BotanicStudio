@@ -17,7 +17,7 @@ const Wishlist = ({
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-stone-200">
           <h2 className="font-serif font-bold text-lg text-stone-900 flex items-center gap-2">
-            <Heart size={18} className="fill-rose-600 text-rose-600" />
+            <Heart size={18} className="fill-emerald-900 text-emerald-900" />
             Your Wishlist ({wishlistItems.length})
           </h2>
           <button

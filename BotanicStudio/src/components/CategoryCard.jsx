@@ -17,7 +17,7 @@ const CategoryCard = ({ selectedCategory, onSelectCategory,selectedLight, onSele
   const careOptions = ['All', 'Low-Maintenance', 'Enthusiast'];
 
   return (
-    <div className="w-64 bg-white/70 border border-stone-200/80 rounded-2xl p-5 shadow-sm text-stone-700">
+    <div className="w-64 bg-white/70 border border-stone-200/80 rounded-2xl p-5 text-stone-700">
       {/* Header: Title & Reset Button */}
       <div className="flex items-center justify-between pb-4 border-b border-stone-100">
         <h2 className="font-serif font-bold text-lg text-stone-900 ">
@@ -47,7 +47,7 @@ const CategoryCard = ({ selectedCategory, onSelectCategory,selectedLight, onSele
                   onClick={() => onSelectCategory(cat)}
                   className={`w-full text-left px-3 py-1.5 rounded-lg text-sm${
                     isActive
-                      ? 'bg-emerald-50 text-emerald-900 font-semibold'
+                      ? 'text-emerald-900 font-semibold'
                       : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50 font-normal'
                   }`}
                 >
@@ -74,7 +74,7 @@ const CategoryCard = ({ selectedCategory, onSelectCategory,selectedLight, onSele
                   onClick={() =>onSelectLight(light)}
                   className={`w-full text-left px-3 py-1.5 rounded-lg text-sm ${
                     isActive
-                      ? 'bg-emerald-50 text-emerald-900 font-semibold shadow-xs'
+                      ? 'text-emerald-900 font-semibold '
                       : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50 font-normal'
                   }`}
                 >
@@ -101,7 +101,7 @@ const CategoryCard = ({ selectedCategory, onSelectCategory,selectedLight, onSele
                   onClick={() =>onSelectCare(care)}
                   className={`w-full text-left px-3 py-1.5 rounded-lg text-sm ${
                     isActive
-                      ? 'bg-emerald-50 text-emerald-900 font-semibold shadow-xs'
+                      ? 'text-emerald-900 font-semibold '
                       : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50 font-normal'
                   }`}
                 >

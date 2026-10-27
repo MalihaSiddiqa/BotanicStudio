@@ -1,7 +1,6 @@
 import { Heart } from "lucide-react";
-import { memo } from "react";
 
-const Home = memo((props) => {
+const Home = (props) => {
   return (
     <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-md flex flex-col justify-between">
       {/* Image Container with Badges */}
@@ -18,7 +17,7 @@ const Home = memo((props) => {
           onClick={()=>props.onLike(props.plant)}
          className="absolute top-2.5 right-2.5 w-7 h-7 bg-white/80 text-stone-600 rounded-full text-xs flex justify-center items-center">
           <Heart 
-         className={`${props.like ? 'fill-rose-600 text-rose-600' : 'fill-none text-stone-600'}`}
+         className={`${props.like ? 'fill-emerald-900 text-emerald-900' : 'fill-none text-stone-600'}`}
           size={15} />
         </button>
       </div>
@@ -54,7 +53,7 @@ const Home = memo((props) => {
           <button
             onClick={()=>props.onSave(props.plant)}
             disabled={props.isSaved}
-            className="px-3.5 py-1.5 bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold rounded-lg "
+            className="px-3.5 py-1.5 bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-semibold rounded-lg cursor-pointer "
           >
             {props.isSaved ? "Added!" : "Add to Cart"}
           </button>
@@ -62,6 +61,6 @@ const Home = memo((props) => {
       </div>
     </div>
   );
-});
+};
 
 export default Home;

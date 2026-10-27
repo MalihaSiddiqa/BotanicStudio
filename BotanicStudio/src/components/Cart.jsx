@@ -11,7 +11,7 @@ const Cart = ({
   const [coupon, setCoupon] = useState("");
 
   const subtotal = cartItems.reduce( (sum, item) => 
-    sum + (item.price) * (item.quantity || 1), 0,)
+    sum + (item.price) * (item.quantity ), 0,)
 
   const discount = isDiscountApplied ? Math.round(subtotal * 0.1) : 0;
   const grandTotal = subtotal - discount;
@@ -91,7 +91,7 @@ const Cart = ({
                   {/* Total Item Price & Remove */}
                   <div className="flex flex-col items-end justify-between self-stretch shrink-0">
                     <span className="text-xs font-bold text-stone-900">
-                      ₹{(item.price ) * (item.quantity || 1)}
+                      ₹{(item.price ) * (item.quantity)}
                     </span>
                     <button
                       type="button"
