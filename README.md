@@ -53,3 +53,4 @@ BotanicStudio/
 ├── tailwind.config.js
 └── vite.config.js
 <!-- trigger badge 1 -->
+<!-- trigger badge 2 -->
