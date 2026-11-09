@@ -3,7 +3,7 @@ import { LeafyGreen, Search,Heart, Menu } from "lucide-react";
 const Navbar = (props) => {
   return (
     <div className="w-full bg-white/90 sticky top-0 z-30 p-2">
-      {/* Laptop only: menu pinned to the far-left corner of the screen */}
+      {/* menu pinned*/}
       <div className=" hidden lg:flex items-center absolute gap-4 left-6 top-1/2 -translate-y-1/2">
         <button
           type="button"

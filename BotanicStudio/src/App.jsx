@@ -76,7 +76,7 @@ const handleToggleWishlist =(plant) => {
      prev.find((item) => item.id === plant.id)  
   ? prev.filter((item) => item.id !== plant.id)
    : [...prev, plant], 
-  );}
+  )}
 
 const handleAddToCart =(plant) => { setCartItems((prev) => [...prev, { ...plant , quantity : 1}])}
 
